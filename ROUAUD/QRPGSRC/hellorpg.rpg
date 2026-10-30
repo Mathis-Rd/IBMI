@@ -1,0 +1,5 @@
+     C                     MOVEL'BONJOUR 'MSG    18
+     C                     MOVEL'MATHIS'  PRENOM 10
+     C                     MOVE PRENOM    MSG
+     C           MSG       DSPLY
+     C                     SETON                         LR

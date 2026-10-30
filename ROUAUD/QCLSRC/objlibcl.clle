@@ -1,0 +1,109 @@
+             PGM
+
+             /*Déclaration des fichiers avec ID*/
+             DCLF       FILE(ROUAUD/ECRANBONB) OPNID(E)
+             DCLF       FILE(QADSPOBJ) OPNID(O)
+
+             /*Déclaration d'une variable pour le numéro d'un objet*/
+             DCL        VAR(&NUMOBJ) TYPE(*DEC) LEN(10 0) VALUE(0)
+
+             /*Vérification de l'utilisation du F3*/
+ LISTLIB:    DOUNTIL    COND(&E_IN03 = '1')
+
+             /*Affichage de l'écran de saisie*/
+             SNDRCVF    RCDFMT(FMTSAISIEB)
+
+             /*Fermeture de l'écran en cas de F3*/
+             IF         COND(&E_IN03 = '1') THEN(GOTO END)
+
+             /*Création du fichier F_OBJ contenant les objets de la bib +
+               saisie à l'écran*/
+               DSPOBJD    OBJ(&BIBLIO/*ALL) OBJTYPE(*ALL) OUTPUT(*OUTFILE) +
+                          OUTFILE(QTEMP/F_OBJLIST)
+
+             /*Gestion des erreurs d'absence ou de lib inaccessibles*/
+              MONMSG     MSGID(CPF2105 CPF2110 CPF2112 CPF9820 +
+                         CPF2123 CPF0001) EXEC(DO)
+             /*Retour à l'écran de saisie en cas d'erreur*/
+                        GOTO LISTLIB
+             ENDDO
+             /*Recherche du nombre d'objets dans la bib*/
+             RTVMBRD    FILE(QTEMP/F_OBJLIST) NBRCURRCD(&TTNUMBER)
+
+             /*Remplace le fichier QADSPOBJ par F_OBJ*/
+             OVRDBF     FILE(QADSPOBJ) TOFILE(QTEMP/F_OBJLIST)
+
+             /*Réinitialise le numéro d'un objet à 0 quand on ouvre une +
+               nouvelle liste d'objets*/
+             CHGVAR     VAR(&E_NUMOBJ) VALUE(0)
+             /*Vérifie que la bib saisie est bien prise en compte*/
+             DOWHILE    COND('1')
+
+             /*Ouvre le fichier avec la liste des obj d'une bib*/
+             RCVF       OPNID(O)
+
+             /*Gestion de l'erreur de fermeture de fichier*/
+             MONMSG     MSGID(CPF0864) EXEC(LEAVE)
+
+             /*Appel de la sous-routine de changement de variables*/
+             CALLSUBR   SUBR(CHGVAR)
+
+             /*Affichage de l'écran de l'objet*/
+             SNDRCVF    RCDFMT(FMTBIBL)
+
+             /*Vérification du F3*/
+             IF         COND(&E_IN03 = '1') THEN(GOTO END)
+
+             /*Vérification du F12*/
+             IF         COND(&E_IN12 = '1') THEN(DO)
+
+             /*Fermeture du fichier en cas de F12*/
+                        CLOSE OPNID(O)
+
+             /*Retour à l'écran de saisie en cas de F12*/
+                        GOTO LISTLIB
+             ENDDO
+             ENDDO
+
+             /*Fermeture du fichier à la fin des objets de la bib*/
+             CLOSE      OPNID(O)
+
+             /*Suppression du template*/
+             DLTOVR     FILE(QADSPOBJ) LVL(*)
+
+             /*Gestion de l'erreur CPF9841*/
+             MONMSG     MSGID(CPF9841)
+             ENDDO
+
+             /*Déclaration de la sous-routine de changement de variables*/
+             SUBR       SUBR(CHGVAR)
+
+             /*Incrémentation de la variable &NUMERO à chaque nouvel objet*/
+             CHGVAR     VAR(&E_NUMOBJ) VALUE(&E_NUMOBJ + 1)
+
+             /*Affichage du nom de la bib*/
+             CHGVAR     VAR(&E_BIBLIO) VALUE(&O_ODLBNM)
+
+             /*Affichage du nom de l'objet*/
+             CHGVAR     VAR(&E_NOMOBJ) VALUE(&O_ODOBNM)
+
+             /*Affichage du type de l'objet*/
+             CHGVAR     VAR(&E_TYPEOBJBIB) VALUE(&O_ODOBTP)
+
+             /*Affichage de la taille de l'objet*/
+             CHGVAR     VAR(&E_TAILLEOBJB) VALUE(&O_ODOBSZ)
+
+             /*Affichage la taille en couleur si supérieur à 99999*/
+             IF         COND(&E_TAILLEOBJB > 99999) THEN(DO)
+                        CHGVAR VAR(&E_IN90) VALUE('1')
+                        ENDDO
+
+             /*Affichage en vert si inférieur ou égal à 99999*/
+             ELSE       CMD(DO)
+                        CHGVAR VAR(&E_IN90) VALUE('0')
+             ENDDO
+
+             /*Affichage du numéro de l'objet*/
+             CHGVAR     VAR(&NUMBER) VALUE(&NUMOBJ)
+             ENDSUBR
+ END:        ENDPGM

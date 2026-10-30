@@ -1,0 +1,57 @@
+             PGM        PARM(&BIBLIO &REPERTOIRE)
+             DCLF       FILE(LSTSRCD) RCDFMT(WEXPIFS)
+             DCLF       FILE(QAFDMBRL) OPNID(F)
+
+             DCL        VAR(&BIBLIO) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&REPERTOIRE) TYPE(*CHAR) LEN(50)
+
+             DCL        VAR(&DATHEU) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&DATE)   TYPE(*CHAR) LEN(8)
+             DCL        VAR(&HEURE)  TYPE(*CHAR) LEN(6)
+             DCL        VAR(&HORO)   TYPE(*CHAR) LEN(19)
+             DCL        VAR(&PATH) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&EXPORT) TYPE(*CHAR) LEN(100)
+
+             CHGVAR     VAR(&EXPORT) VALUE(&REPERTOIRE)
+ LECTURE:    RCVF       OPNID(F)
+             MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(SUITE))
+
+             IF         COND(&F_MLSEU2 *NE ' ') THEN(DO)
+             CHGVAR VAR(&NBMBR) VALUE(&NBMBR + 1)
+             CALL       PGM(EXPMBRC) PARM((&EXPORT) (&BIBLIO) +
+                          (&F_MLFILE) (&F_MLNAME) (&F_MLSEU2))
+             ENDDO
+             GOTO       CMDLBL(LECTURE)
+
+/* Date et heure système : AAAAMMJJHHMMSSxxxxxx */
+ SUITE:      RTVSYSVAL  SYSVAL(QDATETIME) RTNVAR(&DATHEU)
+
+             CHGVAR     VAR(&DATE)  VALUE(%SST(&DATHEU 1 8))
+             CHGVAR     VAR(&HEURE) VALUE(%SST(&DATHEU 9 6))
+
+/* AAAAMMJJ_HHMMSS.zip */
+             CHGVAR     VAR(&HORO) VALUE(&DATE *CAT '_' *TCAT &HEURE +
+                          *TCAT '.zip')
+
+/* <répertoire>/<BIBLIOTHÈQUE>_AAAAMMJJ_HHMMSS.zip               */
+             CHGVAR     VAR(&PATH) VALUE(&REPERTOIRE *TCAT &BIBLIO +
+                          *TCAT '_' *TCAT &HORO)
+
+/* Découpage du path pour affichage dans la fenetre              */
+             CHGVAR     VAR(&PATH1) VALUE(%SST(&PATH 1 50))
+             CHGVAR     VAR(&PATH2) VALUE(%SST(&PATH 51 50))
+/* AFFICHAGE                                                     */
+             DOWHILE    COND(1 = 1)
+
+             SNDRCVF    RCDFMT(WEXPIFS)
+             SELECT
+             WHEN       COND(&IN12 *EQ '1') THEN(LEAVE)
+             WHEN       COND(&REP *EQ 'N') THEN(LEAVE)
+             WHEN       COND(&REP *EQ 'O') THEN(DO)
+             CPYTOARCF    FROMFILE(&EXPORT) TOARCF(&PATH) +
+                          SUBTREE(*ALL)
+             LEAVE
+             ENDDO
+             ENDSELECT
+             ENDDO
+ FIN:        ENDPGM

@@ -1,0 +1,29 @@
+             PGM
+
+             DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&DIR)  TYPE(*CHAR) LEN(50)
+             DCL        VAR(&PATH) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&MSG)  TYPE(*CHAR) LEN(150)
+
+             CLRPFM     FILE(rouaud/livcsv) MBR(livcsv)
+
+             OVRDBF     FILE(livcsv) TOFILE(rouaud/livcsv) +
+                          MBR(livcsv)
+             CALL       PGM(rouaud/livgap3)
+             DLTOVR     FILE(livcsv)
+
+              RTVJOBA    USER(&USER)
+              CHGVAR     VAR(&DIR) VALUE('/home/' *TCAT &USER)
+              MKDIR      DIR(&DIR)
+              MONMSG     MSGID(CPFA0A0)
+              CHGVAR     VAR(&PATH) VALUE(&DIR *TCAT '/livcsv.csv')
+
+             CPYTOSTMF  FROMMBR('/QSYS.LIB/rouaud.LIB/livcsv.FILE/+
+                          livcsv.MBR') +
+                          TOSTMF(&PATH) +
+                          STMFOPT(*REPLACE) STMFCCSID(1252)
+
+             CHGVAR     VAR(&MSG) VALUE('Fichier' *BCAT &PATH *TCAT +
+                          ' cree.')
+             SNDPGMMSG  MSG(&MSG)
+             ENDPGM

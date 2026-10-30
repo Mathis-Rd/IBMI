@@ -1,0 +1,9 @@
+     C                     Z-ADD10        NOMB   142
+     C                     Z-ADD0         I       20
+     C           BOUCLE    TAG
+     C           NOMB      MULT 1.2       NOMB   142
+     C           NOMB      DSPLY
+     C                     ADD  1         I
+     C           I         COMP 10                     99
+     C   99                GOTO BOUCLE
+     C                     SETON                     LR

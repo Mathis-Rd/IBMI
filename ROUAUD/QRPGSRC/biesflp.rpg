@@ -1,0 +1,122 @@
+     **** DECLARATION FICHIERS ***************************************
+     FECRANSFLCF  E                    WORKSTN
+     F                                        LIGNE KSFILE SFLBIE
+     FBEERF1  IF  E           K        DISK
+     E                    TCMD    1   1 80
+     IBEERF
+     I              TXTVAPR                         TXTVA
+     I           SDS
+     I                                        1  10 PGM
+     **** TRAITEMENT DU PROGRAMME ************************************
+     C                     EXSR CHARGE
+     C           *INKC     DOWEQ'0'
+     C                     EXSR CHARGE
+     C  N24                WRITEPIED01
+     C   24                WRITEPIED02
+     C                     EXFMTCTLBIE
+     * -- GESTION DES TOUCHES DE FONCTIONS ---------------------------
+     C   KC                LEAVE
+     C           *INKF     CASEQ'1'       CREAT
+     C           *INKE     CASEQ'1'       CHARGE
+     C           *INKH     CASEQ'1'       QCMD
+     C           *INKI     CASEQ'1'       DLTS
+     C           *INKV     CASEQ'1'       LCMD
+     C           *INKY     CASEQ'1'       ALTKE
+     C   81                CAS            RELI
+     C                     ENDCS
+     C                     ENDDO
+     C                     SETON                     LR
+     **** FIN TRAITEMENT *********************************************
+     *****************************************************************
+     *
+     **** SOUS ROUTINES **********************************************
+     *****************************************************************
+     *
+     **** SOUS ROUTINE CHARGE ****************************************
+     C           CHARGE    BEGSR
+     * ------- REMISE À ZERO DES INDICATEUR ET DE LA LIGNE -----------
+     C                     MOVEA'0000'    *IN,40
+     C                     Z-ADD0         LIGNE   40
+     * ------- Effacement du sous fichier *IN40 - SFLCLR -------------
+     C                     SETON                     80
+     C                     WRITECTLBIE
+     C                     SETOF                     80
+     * ------- Boucle de remplissage du sous fichier -----------------
+     C           WREF      SETLLBEERF
+     C                     READ BEERF                    90
+     C           *IN90     DOWEQ'0'
+     C           LIGNE     ANDLE9998
+     C                     ADD  1         LIGNE
+     C           PRSTPR    COMP STMIPR                 51
+     C                     WRITESFLBIE
+     C                     READ BEERF                    90
+     C                     ENDDO
+     * ------- Activation des indicateurs d'affichage ----------------
+     *  *IN40 - SFLCLR     *IN41 - SFLDSPCTL
+     *  *IN42 - SFLDSP     *IN43 - SFLEND
+     C                     SETON                     8183
+     C           LIGNE     COMP 0                    82
+     C                     ENDSR
+     **** SOUS ROUTINE RELI ******************************************
+     C           RELI      BEGSR
+     C                     MOVE '0'       *IN23
+     C           *IN23     DOWEQ'0'
+     * ------- Lecture changement du sous fichier --------------------
+     C                     READCSFLBIE                   23
+     C           *IN23     IFEQ '0'
+     C           OPTBIE    CASEQ'2'       MODIF
+     C           OPTBIE    CASEQ'4'       SUPPR
+     C           OPTBIE    CASEQ'6'       IMPRE
+     C                     ENDCS
+     C                     MOVE *BLANKS   OPTBIE
+     C                     UPDATSFLBIE
+     C                     ENDIF
+     C                     ENDDO
+     C                     ENDSR
+     **** SOUS ROUTINE MODIF *** Opt 2 - Modification ****************
+     C           MODIF     BEGSR
+     C                     CALL 'BIERE'
+     C                     PARM           PRIDPR
+     C                     ENDSR
+     **** SOUS ROUTINE CREAT *** F6 - Création ***********************
+     C           CREAT     BEGSR
+     C                     CALL 'BIERE'
+     C                     PARM 999999    PRIDPR
+     C                     ENDSR
+     **** SOUS ROUTINE SUPPR *** Opt 4 - Suppression *****************
+     C           SUPPR     BEGSR
+     C                     CALL 'DBIERE'
+     C                     PARM           PRIDPR
+     C                     ENDSR
+     **** SOUS ROUTINE AFFIC *** Opt 6 - IMPRESSION ******************
+     C           IMPRE     BEGSR
+     C                     CALL 'IMPBIE'
+     C                     PARM           PRIDPR
+     C                     ENDSR
+     **** SOUS ROUTINE LCMD *** F21 - Ligne de commande **************
+     C           LCMD      BEGSR
+     C                     CALL 'QUSCMDLN'
+     C                     ENDSR
+     **** SOUS ROUTINE ALTKE ** F24 - Autres touches *****************
+     C           ALTKE     BEGSR
+     C                     SELEC
+     C           *IN24     WHEQ *ON
+     C                     SETOF                     24
+     C           *IN24     WHEQ *OFF
+     C                     SETON                     24
+     C                     ENDSL
+     C                     ENDSR
+     **** SOUS ROUTINE QCMD *** F08 - WRKSPLF ************************
+     C           QCMD      BEGSR
+     C                     CALL 'QCMDEXC'
+     C                     PARM 'WRKSPLF' COM    80
+     C                     PARM 80        LEN    155
+     C                     ENDSR
+     **** SOUS ROUTINE DLTS *** F09 - DLTSPLF ************************
+     C           DLTS      BEGSR
+     C                     CALL 'QCMDEXC'
+     C                     PARM TCMD,1    COM    80
+     C                     PARM 80        LEN    155
+     C                     ENDSR
+** TCMD
+DLTSPLF FILE(*SELECT)

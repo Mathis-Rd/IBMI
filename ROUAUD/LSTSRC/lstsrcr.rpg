@@ -1,0 +1,191 @@
+     FQAFDMBRLIF  E                    DISK
+     FLSTSRCD CF  E                    WORKSTN
+     F                                        RANG  KSFILE SFL1
+     *** PSDS : PROGRAM STATUS DATA STRUCTURE (IPDS + IPJ)
+     I           SDS
+     I                                        1  10 PGM
+     I            DS
+     I                                        1   2 AA1
+     I                                        3   4 MM1
+     I                                        5   6 JJ1
+     I                                        1   6 MLCHGD
+     I            DS
+     I                                        1   2 JJ2
+     I                                        3   4 MM2
+     I                                        5   6 AA2
+     I                                        1   60JJMMAA
+     **** TRAITEMENT DU PROGRAMME ************************************
+     C           *ENTRY    PLIST
+     C                     PARM           BIBLIO
+     C                     EXSR CHARGE
+     C           '0'       DOWEQ'0'                        <---------+
+     C  N51                WRITEPIED1                                |
+     C                     EXFMTCTL1                                 |
+     * -- GESTION DES TOUCHES DE FONCTIONS ---                      |
+     C   KC                LEAVE                                     |
+     C   KL                LEAVE                                     |
+     C           REPIFS    COMP *BLANKS                  51          |
+     C           *INKE     CASEQ'1'       REACTU                     |
+     C           *IN25     CASEQ'1'       CHARGE                     |
+     C           *INKI     CASEQ'1'       SRIFS                      |
+     C           *INKM     CASEQ'1'       REPEAT                     |
+     C  N51      *INKV     CASEQ'1'       EXPZIP                     |
+     C  N51                CAS            RELI                       |
+     C                     ENDCS                                     |
+     C                     ENDDO                           <---------+
+     C                     SETON                     LR
+     **** FIN TRAITEMENT *********************************************
+     *---------------------------------------------------------------*
+     *--------------- SOUS ROUTINES ---------------------------------*
+     *---------------------------------------------------------------*
+     **** SOUS ROUTINE REACTU ****************************************
+     C           REACTU    BEGSR                           <---------+
+     C                     CLEARFLTFIC                               |
+     C                     CLEARFLTATT                               |
+     C                     EXSR CHARGE                               |
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE CHARGE ****************************************
+     C           CHARGE    BEGSR                           <---------+
+     * ------- REMISE À ZERO DES INDICATEUR ET DE LA LIGNE          |
+     C                     MOVEA'00'      *IN,80                     |
+     C                     SETOF                     51              |
+     C                     Z-ADD0         RANG    40                 |
+     * ------- Effacement du sous fichier *IN40 - SFLCLR             |
+     C                     WRITECTL1                                 |
+     * ------- Boucle de remplissage du sous fichier                |
+     C           1         SETLLQWHFDML                              |
+     C                     READ QWHFDML                  90          |
+     C           *IN90     DOWEQ'0'                        <-------+|
+     C           RANG      ANDLT9999                               ||
+     * FILTRE SUR LE FICHIER SOURCE                               ||
+     C                     MOVELMLFILE    WVAL   10                ||
+     C                     MOVELFLTFIC    WFLT   10                ||
+     C                     EXSR SRGEN                              ||
+     * FILTRE SUR L'ATTRIBUT, SEULEMENT SI LE FICHIER EST RETENU  ||
+     C           WOK       IFEQ '1'                        <-----+ ||
+     C                     MOVELMLSEU2    WVAL                   | ||
+     C                     MOVELFLTATT    WFLT                   | ||
+     C                     EXSR SRGEN                            | ||
+     C                     END                             <-----+ ||
+     * ... ALIMENTER LES ZONES DU SFL, AJOUTER 1 AU RANG, WRITE    ||
+     C           WOK       IFEQ '1'                        <-----+ ||
+     C                     MOVELMLMTXT    TXT30                  | ||
+     C                     MOVE MLMTXT    TXT20                  | ||
+     C                     MOVELJJ1       JJ2                    | ||
+     C                     MOVELMM1       MM2                    | ||
+     C                     MOVELAA1       AA2                    | ||
+     C                     ADD  1         RANG                   | ||
+     C                     WRITESFL1                             | ||
+     C                     ENDIF                           <-----+ ||
+     C                     READ QWHFDML                  90        ||
+     C                     ENDDO                           <-------+|
+     * ------- Activation des indicateurs d'affichage                |
+     * N80 = SFLCLR | 80 = SFLDSPCTL | 81 = SFLDSP | 81 = SFLEND    |
+     C                     SETON                     80              |
+     C           RANG      COMP 0                    81              |
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE RELI ******************************************
+     C           RELI      BEGSR                            <---------+
+     C                     READCSFL1                     23           |
+     C           *IN23     DOWEQ'0'                         <-------+ |
+     * ------- Lecture changement du sous fichier ---------        | |
+     C           OPT       CASEQ'6'       EXPIFS                    | |
+     C                     ENDCS                                    | |
+     C                     MOVE *BLANKS   OPT                       | |
+     C                     UPDATSFL1                                | |
+     C                     READCSFL1                     23         | |
+     C                     ENDDO                            <-------+ |
+     C                     ENDSR                            <---------+
+     **** SOUS ROUTINE AFFIC *** Opt 6 - EXPZIP     ******************
+     C           EXPIFS    BEGSR                           <---------+
+     C                     CALL 'EXPMBRC'                            |
+     C                     PARM           REPIFS                     |
+     C                     PARM           BIBLIO                     |
+     C                     PARM           MLFILE           /FICHIER |
+     C                     PARM           MLNAME           /MEMBRE  |
+     C                     PARM           MLSEU2           /ATTRIBUT|
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE DLTS *** F09 - REPIFS  ************************
+     C           SRIFS     BEGSR                           <---------+
+     C           *INKL     DOWEQ'0'                        <-------+|
+     C                     EXFMTWREPIFS                            ||
+     C   KL                LEAVE                                   ||
+     C                     CALL 'CHKDIRC'                          ||
+     C                     PARM           REPIFS                   ||
+     C                     PARM '0'       RETOUR  1                ||
+     C           RETOUR    COMP '0'                  9595          ||
+     C   95                ENDDO                           <-------+|
+     * POSITION DU DERNIER CARACTÈRE NON BLANC DU CHEMIN            |
+     C           ' '       CHEKRREPIFS    POS     30                 |
+     C           POS       IFEQ 0                          <-------+|
+     *          CHEMIN À BLANC : ERREUR                           ||
+     C                     ELSE                            <-------+|
+     * DERNIER CARACTÈRE                                          ||
+     C           1         SUBSTREPIFS:POSWLAST   1                ||
+     C           WLAST     IFNE '/'                        <-----+ ||
+     C           POS       IFEQ 50                         <---+ | ||
+     * CHEMIN PLEIN, PAS DE PLACE POUR LE '/' : ERREUR        | | ||
+     C                     ELSE                            <---+ | ||
+     * AJOUT DU '/' EN FIN DE CHEMIN                          | | ||
+     C           REPIFS    CAT  '/':0     REPIFS               | | ||
+     C                     END                             <---+ | ||
+     C                     END                             <-----+ ||
+     C                     END                             <-------+|
+     C           REPIFS    COMP *BLANKS                  51          |
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE EXPZIP ** F21 - EXPZIP **********************
+     C           EXPZIP    BEGSR                           <---------+
+     C                     CALL 'EXPZIPC'                            |
+     C                     PARM           BIBLIO                     |
+     C                     PARM           REPIFS                     |
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE REPEAT ** F13 - REPEAT **********************
+     C           REPEAT    BEGSR                           <---------+
+     *--- Recherche de la 1ere ligne avec une option
+     C                     Z-ADD1         WRANG   40                 |
+     C                     MOVE *BLANK    WOPT    1
+     C           WRANG     CHAINSFL1                 99              |
+     C           *IN99     DOWEQ'0'                        <-------+|
+     C           OPT       IFNE *BLANK                             ||
+     C                     MOVE OPT       WOPT                     ||
+     C                     LEAVE                                   ||
+     C                     ENDIF                                   ||
+     C                     ADD  1         WRANG                    ||
+     C           WRANG     CHAINSFL1                 99            ||
+     C                     ENDDO                           <-------+|
+     *--- Recopie sur toutes les lignes suivantes                    |
+     C           WOPT      IFNE *BLANK                     <-------+|
+     C           *IN99     DOUEQ'1'                        <-----+ ||
+     C                     ADD  1         WRANG                  | ||
+     C           WRANG     CHAINSFL1                 99          | ||
+     C                     MOVE WOPT      OPT                    | ||
+     C                     SETON                     88          | ||
+     C  N99                UPDATSFL1                             | ||
+     C                     SETOF                     88          | ||
+     C                     ENDDO                           <-----+ ||
+     C                     ENDIF                           <-------+|
+     C                     ENDSR                           <---------+
+     **** SOUS ROUTINE SRGEN *** FILTRE ****************************
+     C           SRGEN     BEGSR                           <---------+
+     C                     MOVE '1'       WOK     1                  |
+     C           WFLT      IFNE *BLANKS                    <-------+ |
+     * RECHERCHE DU '*' : INDICATEUR 75 ALLUMÉ SI TROUVÉ          | |
+     C           '*'       SCAN WFLT      WPOS    20     75        | |
+     C           *IN75     IFEQ '1'                        <-----+ | |
+     * LONGUEUR DU PRÉFIXE = POSITION DU '*' - 1                | | |
+     C           WPOS      SUB  1         WLG     20             | | |
+     C           WLG       IFGT 0                          <---+ | | |
+     C           WLG       SUBSTWVAL      WPFX1  10 P          | | | |
+     C           WLG       SUBSTWFLT      WPFX2  10 P          | | | |
+     C           WPFX1     IFNE WPFX2                      <-+ | | | |
+     C                     MOVE '0'       WOK                | | | | |
+     C                     END                             <-+ | | | |
+     C                     END                             <---+ | | |
+     C                     ELSE                            <-----+ | |
+     * PAS DE '*' : COMPARAISON EXACTE                          | | |
+     C           WVAL      IFNE WFLT                       <-+   | | |
+     C                     MOVE '0'       WOK                |   | | |
+     C                     END                             <-+   | | |
+     C                     END                             <-----+ | |
+     C                     END                             <-------+ |
+     C                     ENDSR                           <---------+

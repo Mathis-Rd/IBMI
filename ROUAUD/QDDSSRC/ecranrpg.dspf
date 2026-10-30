@@ -1,0 +1,225 @@
+     A*%%TS  SD  20261028  141554  MATROU08    REL-V7R5M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R RESULTAT
+     A*%%TS  SD  20261015  160615  MATROU08    REL-V7R5M0  5770-WDS
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  2 19'Ajout du pourcentage d''un nombre -
+     A                                      à lui même'
+     A                                      COLOR(WHT)
+     A                                  1 70DATE
+     A                                      EDTCDE(Y)
+     A                                  2 70TIME
+     A                                  8 24'Nombre'
+     A                                      COLOR(WHT)
+     A                                 11 19'Pourcentage'
+     A                                      COLOR(WHT)
+     A                                 16 22'Résultat'
+     A                                      COLOR(WHT)
+     A            NOMBRE         6S 0I  8 38CHECK(ME)
+     A                                 12  1'(Sous la forme 1.20 pour 20%)'
+     A                                      COLOR(WHT)
+     A                                 23  8'F3=Quitter'
+     A                                      COLOR(BLU)
+     A          R SRCHID
+     A*%%TS  SD  20261019  085737  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                 11 19'Numéro du bonbon'
+     A                                      COLOR(WHT)
+     A            NUMB      R        I 11 40REFFLD(FBONBON/NUMBB ROUAUD/BONBON2)
+     A                                 23  8'F3=Quitter'
+     A                                      COLOR(BLU)
+     A          R AFFBON
+     A*%%TS  SD  20261016  105148  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                  9 25'Nom'
+     A                                      COLOR(WHT)
+     A                                 12 21'Couleur'
+     A                                      COLOR(WHT)
+     A                                 15 24'Prix'
+     A                                      COLOR(WHT)
+     A            NOM           20A  O  9 32
+     A            COULEU        10A  O 12 32
+     A            PRIX      R        O 15 32REFFLD(FBONBON/PRIX ROUAUD/BONBON2)
+     A                                 23 10'F3=Quitter'
+     A                                      COLOR(BLU)
+     A                                 23 23'F12=Annuler'
+     A                                      COLOR(BLU)
+     A          R FMT1
+     A*%%TS  SD  20261019  102605  MATROU08    REL-V7R5M0  5770-WDS
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  1 72DATE
+     A                                      EDTCDE(Y)
+     A                                  2 72TIME
+     A                                  2 32'Mon 1er écran RPG'
+     A                                      COLOR(WHT)
+     A                                 10 32'Hello la compagnie'
+     A                                      COLOR(PNK)
+     A            TEST          10   O 13 36
+     A          R FMTSOL
+     A*%%TS  SD  20261019  113150  MATROU08    REL-V7R5M0  5770-WDS
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  2 33'Affichage soldat'
+     A                                      COLOR(WHT)
+     A                                  1 72DATE
+     A                                      EDTCDE(Y)
+     A                                  2 72TIME
+     A          R FMTCAN
+     A*%%TS  SD  20261020  144747  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  1 35'Fiche Bonbon'
+     A                                      COLOR(WHT)
+     A                                  1 73DATE
+     A                                      EDTCDE(Y)
+     A                                  2 73TIME
+     A                                 11 21'Marque :'
+     A                                      COLOR(WHT)
+     A                                  9 24'Nom :'
+     A                                      COLOR(WHT)
+     A                                 13 20'Couleur :'
+     A                                      COLOR(WHT)
+     A                                 15 23'Prix :'
+     A                                      COLOR(WHT)
+     A                                 17 21'Numéro :'
+     A                                      COLOR(WHT)
+     A            PRIX      R        B 15 43REFFLD(FBONBON/PRIX ROUAUD/CANDY)
+     A                                      EDTCDE(1)
+     A  55                                  ERRMSG('Le prix ne peut pas être de-
+     A                                       0' 55)
+     A            COLOR     R        B 13 41REFFLD(FBONBON/COULEUR ROUAUD/CANDY)
+     A                                      CHECK(LC)
+     A  54                                  ERRMSG('Couleur ne peut pas être vi-
+     A                                      de' 54)
+     A            MARQUE    R        B 11 31REFFLD(FBONBON/MARQUE ROUAUD/CANDY)
+     A                                      CHECK(LC)
+     A  53                                  ERRMSG('Marque ne peut pas être vid-
+     A                                      e' 53)
+     A            NOM       R        B  9 31REFFLD(FBONBON/NOM ROUAUD/CANDY)
+     A                                      CHECK(LC)
+     A  52                                  ERRMSG('Nom ne peut pas être vide' -
+     A                                      52)
+     A                                 15 50'€'
+     A                                 23  9'F3=Quitter'
+     A                                      COLOR(BLU)
+     A            NUMBER    R        B 17 44REFFLD(FBONBON/NUMBER ROUAUD/CANDY)
+     A N51                                  DSPATR(PR)
+     A            MODE          12A  O  4 35COLOR(PNK)
+     A          R FMTPOP
+     A*%%TS  SD  20261026  094513  PIEGUE04    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      WINDOW(5 10 15 60)
+     A                                  2 26'Suppression'
+     A                                      COLOR(RED)
+     A                                  5  6'Numéro'
+     A                                      COLOR(WHT)
+     A                                  5 29'Nom'
+     A                                      COLOR(WHT)
+     A            NUMBER    R        O  7  6REFFLD(FBONBON/NUMBER ROUAUD/CANDY)
+     A                                      EDTCDE(1)
+     A            NOM       R        O  7 21REFFLD(FBONBON/NOM ROUAUD/CANDY)
+     A                                 13  7'Confirmer la suppression :'
+     A                                      COLOR(WHT)
+     A            VALID          3A  I 13 36
+     A  96                                  ERRMSG('Entrez OUI ou NON UNIQUEMEN-
+     A                                      T' 96)
+     A                                 13 41'(OUI/NON)'
+     A                                      COLOR(BLU)
+     A          R FMTBIE
+     A*%%TS  SD  20261022  094210  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CF21(21 'Imprimer')
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  1 35'Fiche Biere'
+     A                                      COLOR(WHT)
+     A                                  1 69DATE
+     A                                      EDTCDE(Y)
+     A                                  2 69TIME
+     A            MODEB         22A  O  3 30
+     A                                  6 17'Identifiant :'
+     A                                      COLOR(WHT)
+     A                                  8 11'Référence Produit :'
+     A                                      COLOR(WHT)
+     A                                 10 25'Nom :'
+     A                                      COLOR(WHT)
+     A                                 12 15'Stock Produit :'
+     A                                      COLOR(WHT)
+     A                                 13 15'Stock Minimum :'
+     A                                      COLOR(WHT)
+     A                                 17 20'P.U. HT'
+     A                                      COLOR(WHT)
+     A                                 17 36'Tx TVA'
+     A                                      COLOR(WHT)
+     A                                 17 51'P.U. TTC'
+     A                                      COLOR(WHT)
+     A            TXTVA     R        B 19 35REFFLD(BEERF/TXTVAPR ROUAUD/BIERE)
+     A                                      EDTCDE(1)
+     A                                 19 42'%'
+     A                                      COLOR(WHT)
+     A            PRIDPR    R        O  6 31REFFLD(BEERF/PRIDPR ROUAUD/BIERE)
+     A            PRNOPR    R        B 10 31REFFLD(BEERF/PRNOPR ROUAUD/BIERE)
+     A  52                                  ERRMSG('Le Nom ne peut pas être vid-
+     A                                      e' 52)
+     A            PRSTPR    R        B 12 31REFFLD(BEERF/PRSTPR ROUAUD/BIERE)
+     A  54                                  ERRMSG('Le Stock Produit ne peut pa-
+     A                                      s être de 0' 54)
+     A            STMIPR    R        B 13 31REFFLD(BEERF/STMIPR ROUAUD/BIERE)
+     A  55                                  ERRMSG('Le Stock Minimum ne peut pa-
+     A                                      s être de 0' 55)
+     A            PRUNVE    R        B 19 21REFFLD(BEERF/PRUNVE ROUAUD/BIERE)
+     A                                      EDTCDE(1)
+     A  56                                  ERRMSG('Le Prix Unitaire H.T. ne pe-
+     A                                      ut pas être de 0' 56)
+     A            PRREPR    R        B  8 31REFFLD(BEERF/PRREPR ROUAUD/BIERE)
+     A  53                                  ERRMSG('Référence Produit ne peut p-
+     A                                      as être vide' 53)
+     A            PRUTTC         5Y 2O 19 53EDTCDE(1)
+     A                                 16 17'+------------+----------------+----
+     A                                      ----------+'
+     A                                      COLOR(WHT)
+     A                                 17 17'|'
+     A                                      COLOR(WHT)
+     A                                 19 17'|'
+     A                                      COLOR(WHT)
+     A                                 20 17'+------------+----------------+----
+     A                                      ----------+'
+     A                                      COLOR(WHT)
+     A                                 19 61'|'
+     A                                      COLOR(WHT)
+     A                                 17 61'|'
+     A                                      COLOR(WHT)
+     A                                 17 47'|'
+     A                                      COLOR(WHT)
+     A                                 19 47'|'
+     A                                      COLOR(WHT)
+     A                                 17 30'|'
+     A                                      COLOR(WHT)
+     A                                 19 30'|'
+     A                                      COLOR(WHT)
+     A                                 18 17'|------------|----------------|----
+     A                                      ----------|'
+     A                                      COLOR(WHT)
+     A            ATTSTO        15A  O 12 42COLOR(RED)
+     A                                 23 13'F3=Quitter'
+     A                                      COLOR(BLU)
+     A                                 23 34'F21=Imprimer'
+     A                                      COLOR(BLU)
+     A                                 23 58'F12=Annuler'
+     A                                      COLOR(BLU)
+     A          R SFL1                      SFL
+     A*%%TS  SD  20261022  140258  MATROU08    REL-V7R5M0  5770-WDS
+     A          R CTL1                      SFLCTL(SFL1)
+     A*%%TS  SD  20261022  140258  MATROU08    REL-V7R5M0  5770-WDS
+     A  82                                  SFLDSP
+     A  81                                  SFLDSPCTL
+     A  80                                  SFLCLR
+     A  83                                  SFLEND(*MORE)
+     A                                      SFLSIZ(0012)
+     A                                      SFLPAG(0010)

@@ -1,0 +1,15 @@
+     FSOLDAT  IF  E           K        DISK
+     FSOLDATD CF  E                    WORKSTN
+     C           FILTRE    DOWEQ*BLANKS
+     C                     EXFMTFMT0
+     C   03                GOTO END
+     C                     ENDDO
+     C           *IN99     DOWEQ'0'
+     C                     READ SOLDAT                   99
+     C           CLSLDT    IFEQ FILTRE
+     C  N99                EXFMTFMT1
+     C                     ENDIF
+     C   03                GOTO END
+     C                     ENDDO
+     C           END       TAG
+     C                     SETON                         LR

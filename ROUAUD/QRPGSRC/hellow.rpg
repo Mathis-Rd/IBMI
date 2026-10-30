@@ -1,0 +1,8 @@
+     H            D
+     FECRANRPGCF  E                    WORKSTN
+     *** AFFECTER UNE VARIABLE
+     C                     MOVE 'TOTO'    TEST
+     C                     MOVEL'MAITRE'  TEST
+     **** AFFICHAGE
+     C                     EXFMTFMT1
+     C                     SETON                         LR

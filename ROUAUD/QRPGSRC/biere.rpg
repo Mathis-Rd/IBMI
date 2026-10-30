@@ -1,0 +1,155 @@
+     FECRANRPGCF  E                    WORKSTN
+     FBIERE   UF  E           K        DISK                      A
+     FQPRINT  O   F     132     OA    LPRINTER
+     E                    TBM     1   2 22
+     E                    TBI     1   4 37
+     E                    TBF     1   2 80
+     * SPÉCIFICATION L (SAUT DE PAGE)
+     LQPRINT   66FL 60OL
+     IBEERF
+     I              TXTVAPR                         TXTVA
+     C           *ENTRY    PLIST
+     C                     PARM           PRIDPR
+     * On cherche lA BIERE correspondant au PRIDPR
+     C           PRIDPR    CHAINBEERF                90
+     * Si on trouve pas de bIERE on lance la sus-routine NEWPRI
+     C   90                EXSR NEWPRI
+     * ON CALCULE LE PRIX UNITAIRE TTC SI ON TROUVE LA BIERE
+     C                     EXSR CALCUL
+     * On affiche création ou modif en fonction de si on trouve lA
+     * BIERE correspondantE ou non
+     C   90                MOVEATBM,2     MODEB
+     C  N90                MOVEATBM,1     MODEB
+     * Boucle retry
+     C           RETRY     TAG
+     * ON VÉRIFIE LE STOCK SI STOCK MINIMUM > STOCK PRODUIT
+     C                     EXSR STOCK
+     * On affiche l'écran
+     C                     EXFMTFMTBIE
+     * Boucle F3 ET F21(IMPRIMER)
+     C           *IN03     IFEQ '0'
+     C           *IN21     IFEQ '1'
+     C                     EXCPTDET
+     C                     ENDIF
+     * Exécute la sous-routine ctl pour controler les champs
+     C                     EXSR CTL
+     * Exécute la sous-routine en fonction de l'indicateur
+     C   90                EXSR AJOUT
+     C  N90                EXSR MODIF
+      *
+     C                     ENDIF
+     C                     SETON                         LR
+      *
+     ******* SOUS-ROUTINES *******
+      *
+     * Sous-routine pour vérifier les champs
+     C           CTL       BEGSR
+     C           PRNOPR    IFEQ *BLANKS
+     C                     SETON                         52
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           PRREPR    IFEQ *BLANKS
+     C                     SETON                         53
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           PRSTPR    IFLE *ZEROS
+     C                     SETON                         54
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           STMIPR    IFLE *ZEROS
+     C                     SETON                         55
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           PRUNVE    IFLE *ZEROS
+     C                     SETON                         56
+     C                     GOTO RETRY
+     C                     ENDIF
+     C                     ENDSR
+     * Sous-routine d'Ajout
+     C           AJOUT     BEGSR
+     C           PRUNVE    MULT TXTVA     MTVA    52
+     C           MTVA      DIV  100       MTVA
+     C           PRUNVE    ADD  MTVA      PRUTTC
+     C                     WRITEBEERF
+     C                     ENDSR
+     * Sous-routine de Modification
+     C           MODIF     BEGSR
+     C           PRUNVE    MULT TXTVA     MTVA    52
+     C           MTVA      DIV  100       MTVA
+     C           PRUNVE    ADD  MTVA      PRUTTC
+     C                     UPDATBEERF
+     C                     ENDSR
+     * SOUS ROUTINE CALCUL PRIX UNITAIRE TTC
+     C           CALCUL    BEGSR
+     C           PRUNVE    MULT TXTVA     MTVA    52
+     C           MTVA      DIV  100       MTVA
+     C           PRUNVE    ADD  MTVA      PRUTTC
+     C                     ENDSR
+     * Sous routine pour récupérer le premier NUMBER disponible
+     C           NEWPRI    BEGSR
+     C           *HIVAL    SETGTBEERF
+     C                     READPBEERF                    91
+     C   91                Z-ADD0         PRIDPR
+     C                     ADD  1         PRIDPR
+     C                     MOVE *BLANKS   PRNOPR
+     C                     MOVE *BLANKS   PRREPR
+     C                     MOVE *ZEROS    TXTVA
+     C                     MOVE *ZEROS    PRSTPR
+     C                     MOVE *ZEROS    STMIPR
+     C                     MOVE *ZEROS    PRUNVE
+     C                     ENDSR
+      *
+     C           STOCK     BEGSR
+     C           PRSTPR    IFLT STMIPR
+     C                     MOVEL'ATTENTIO'ATTSTO
+     C                     MOVE 'N STOCK' ATTSTO
+     C                     ENDIF
+     C                     ENDSR
+      *
+      *
+     OQPRINT  E 1  1           DET
+     O                         TBF,1     80
+     OQPRINT  E 1              DET
+     O                         TBF,2     80
+     OQPRINT  E 1              DET
+     O                         TBF,1     80
+     OQPRINT  E 2              DET
+     O                                   19 'IDENTIFIANT : '
+     O                         PRIDPR1   26
+     O                                   69 'REFERENCE PRODUIT : '
+     O                         PRREPR    76
+     OQPRINT  E 1              DET
+     O                                   11 'NOM : '
+     O                         PRNOPR    32
+     OQPRINT  E 1              DET
+     O                                   21 'STOCK PRODUIT : '
+     O                         PRSTPR1   28
+     O                                   65 'STOCK MINIMUM : '
+     O                         STMIPR1   72
+     OQPRINT  E 2              DET
+     O                         TBI,1     58
+     OQPRINT  E 1              DET
+     O                         TBI,2     58
+     OQPRINT  E 1              DET
+     O                         TBI,1     58
+     OQPRINT  E 1              DET
+     O                         TBI,4     58
+     O                         PRUNVE1   30
+     O                         TXTVA 1   41
+     O                         PRUTTC1   54
+     OQPRINT  E 1              DET
+     O                         TBI,1     58
+      *
+      *
+      *
+** TBM
+-----MODIFICATION-----
+  -----CREATION-----
+** TBI
++-----------------------------------+
+|  P.U. HT  |  TX TVA  |  P.U. TTC  |
++-----------------------------------+
+|         € |        % |          € |
+** TBF
++==============================================================================+
+|                              FICHE BIERE                                     |

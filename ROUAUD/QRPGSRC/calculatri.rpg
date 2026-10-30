@@ -1,0 +1,47 @@
+     * ON DÉCLARE L'ÉCRAN
+     FECRAN   CF  E                    WORKSTN
+      *
+     * ON MET LE RÉSULTAT À 0
+     C                     Z-ADD0         RESUL
+      *
+    * TAG POUR RECOMMENCER
+     C           RETRY     TAG
+      *
+     *ON AFFICHE L'ÉCRAN
+     C                     EXFMTCALCULAT
+      *
+     * ON MET L'INDICATEUR 91 OFF ET ON COMMENCE LA BOUCLE F3
+     C                     SETOF                         91
+     C           *IN03     DOWEQ'0'
+      *
+     * ON VÉRIFIE QUE OPECAL CONTIENT UNE OPE VALIDE
+     C           OPECAL    IFNE '+'
+     C           OPECAL    ANDNE'-'
+     C           OPECAL    ANDNE'*'
+     C           OPECAL    ANDNE'/'
+     C                     SETON                         91
+     C                     GOTO RETRY
+     C                     ENDIF
+      *
+     * LES CALCULS
+     C           OPECAL    IFEQ '+'
+     C           NB1CAL    ADD  NB2CAL    RESUL
+     C                     ENDIF
+     C           OPECAL    IFEQ '-'
+     C           NB1CAL    SUB  NB2CAL    RESUL
+     C                     ENDIF
+     C           OPECAL    IFEQ '*'
+     C           NB1CAL    MULT NB2CAL    RESUL
+     C                     ENDIF
+     C           OPECAL    IFEQ '/'
+     *ON VÉRIFIE LA DIVISION PAR 0
+     C           NB2CAL    IFEQ 0
+     C                     SETON                         92
+     C                     GOTO RETRY
+     C                     ENDIF
+      *
+     C           NB1CAL    DIV  NB2CAL    RESUL
+     C                     ENDIF
+     C                     GOTO RETRY
+     C                     ENDDO
+     C                     SETON                         LR

@@ -1,0 +1,35 @@
+     H            D
+     *** IMPRIMER UNE FICHE BONBON
+     FCANDYL1 IF  E           K        DISK
+     FQPRINT  O   F     132            PRINTER
+     *** Renomage zone
+     IFBONBON
+     I              COULEUR                         COLOR
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           NUMBER
+     C           NUMBER    CHAINFBONBON              99
+     C                     EXCPTFIC
+     C                     SETON                         LR
+     OQPRINT  E  1             FIC
+     O                                   20 'FICHE BONBON'
+     O                                   40 'Edité le :'
+     O                         UDATE Y +  1
+     OQPRINT  E  3             FIC
+     O                         TBB,1
+     O                                   20 '============'
+     OQPRINT  E  1             FIC
+     O                                      'NUMBER.....:'
+     O                         NUMBER  +  1
+     OQPRINT  E  1             FIC
+     O                                      'NOM .......:'
+     O                         NOM     +  1
+     OQPRINT  E  1             FIC
+     O                                      'MARQUE.....:'
+     O                         MARQUE  +  1
+     OQPRINT  E  1             FIC
+     O                                      'COULEUR....:'
+     O                         COLOR   +  1
+     OQPRINT  E  1             FIC
+     O                                      'PRIX.......:'
+     O                         PRIX    +  1 '   ,  &EURO'

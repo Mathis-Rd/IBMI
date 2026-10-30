@@ -1,0 +1,55 @@
+     H            D
+     *** IMPRIMER UNE FICHE BONBON
+     FBIERE   IF  E           K        DISK
+     FQPRINT  O   F     132            PRINTER
+     E                    FND     1   9 80
+     *** Renomage zone
+     IBEERF
+     I              TXTVAPR                         TXTVA
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           PRIDPR
+     C           PRIDPR    CHAINBEERF                99
+     C           PRUNVE    MULT TXTVA     MTVA    52
+     C           MTVA      DIV  100       MTVA
+     C           PRUNVE    ADD  MTVA      PRUTTC  52
+     C  N99                EXCPTFIC
+     C                     SETON                         LR
+     OQPRINT  E  1             FIC
+     O                         FND,1
+     OQPRINT  E  1             FIC
+     O                         FND,2
+     OQPRINT  E  1             FIC
+     O                         FND,3
+     O                         PRIDPR    25 '0  .   '
+     O                         PRREPR    69
+     OQPRINT  E  1             FIC
+     O                         FND,4
+     O                         PRNOPR    38
+     OQPRINT  E  1             FIC
+     O                         FND,5
+     O                         PRSTPR    25 '0   .   '
+     O                         STMIPR    70 '0   .   '
+     OQPRINT  E  2             FIC
+     O                         FND,7
+     OQPRINT  E  1             FIC
+     O                         FND,8
+     OQPRINT  E  1             FIC
+     O                         FND,9
+     O                         PRUNVE    13 '   0,  '
+     O                         TXTVA     24 '   0,  '
+     O                         PRUTTC    37 '    0,  '
+     OQPRINT  E  1             FIC
+     O                         FND,7
+     OQPRINT  E  1             FIC
+     O                         FND,1
+** FND
+*==============================================================================*
+*                                 FICHE BIERE                                  *
+* IDENTIFIANT . : XXXXXX                   REFERENCE PRODUIT : XXXXXX          *
+* NOM . . . . . : XXXXXXXXXXXXXXXXXXXX                                         *
+* STOCK PRODUIT : XXX.XXX                  STOCK MINIMUM . . : XXX.XXX         *
+*                                                                              *
+*    +----------+----------+------------+                                      *
+*    | P.U. HT  |  TX TVA  |  P.U. TTC  |                                      *
+*    | XXX,XX € | XXX,XX % | X.XXX,XX € |                                      *

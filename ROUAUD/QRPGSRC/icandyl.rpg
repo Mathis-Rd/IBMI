@@ -1,0 +1,50 @@
+     H            D
+     * Déclaration de fichier
+     FCANDYL1 IF  E           K        DISK
+     FQPRINT  O   F     132     OA    LPRINTER
+     * TABLEAU
+     E                    TBB     1   4 80
+     * Spécification L (SAUT DE PAGE)
+     LQPRINT   66FL 60OL
+     * Renommer une zone
+     IFBONBON
+     I              COULEUR                         COLOR
+     *** TRAITEMENT
+     C                     EXCPTENT
+     * Lecture du fichier
+     C           *LOVAL    SETLLFBONBON
+     C                     READ FBONBON                  90
+     C           *IN90     DOWEQ'0'
+     C   OA                EXCPTENT
+     C                     EXCPTDET
+     C                     READ FBONBON                  90
+     C                     ENDDO
+     C                     EXCPTFIN
+     C                     MOVE '1'       *INLR
+     *** SORTIE OUTPUT : IMPRESSION
+     OQPRINT  E 1  1           ENT
+     O                                   45 'LISTE DES BONBONS'
+     O                                   65 'Edité le :'
+     O                         UDATE Y   75
+     OQPRINT  E 1              ENT
+     O                                   45 '================='
+     OQPRINT  E 3              ENT
+     O                         TBB,1
+     OQPRINT  E 1              ENT
+     O                         TBB,2
+     OQPRINT  E 1              ENT
+     O                         TBB,3
+     OQPRINT  E 1              DET
+     O                         TBB,4
+     O                         NUMBER4    8
+     O                         NOM       31
+     O                         MARQUE    54
+     O                         COLOR     67
+     O                         PRIX      77 '  0 ,  &€'
+     OQPRINT  E 1              FIN
+     O                         TBB,1
+** TBB
++----------------------------------------------------------------------------+
+| Numero | Nom                  | Marque               | Couleur   |  Prix   |
+|--------|----------------------|----------------------|-----------|---------|
+| XXXXXX | xxxxxxxxx1xxxxxxxxx2 | xxxxxxxxx1xxxxxxxxx2 | xxxxxxxxx1|xxx,xx € |

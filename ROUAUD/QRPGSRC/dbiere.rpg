@@ -1,0 +1,29 @@
+     H            D
+     ***
+     FBIERE   UF  E           K        DISK
+     FECRANRPGCF  E                    WORKSTN
+     *** Renomage zone
+     IBEERF
+     I              TXTVAPR                         TXTVA
+     I              PRIDPR                          NUMBER
+     I              PRNOPR                          NOM
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           NUMBER
+     C           NUMBER    CHAINBEERF                99
+     C   99                MOVEL'BIERE'   MSG    14
+     C   99                MOVE 'INCONNUE'MSG
+     C   99                DSPLY          MSG
+     C   99                GOTO FIN
+     C           RETRY     TAG
+     C                     EXFMTFMTPOP
+     C           VALID     IFNE 'OUI'
+     C           VALID     ANDNE'NON'
+     C                     SETON                         96
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           VALID     IFEQ 'OUI'
+     C                     DELETBEERF
+     C                     ENDIF
+     C           FIN       TAG
+     C                     SETON                         LR

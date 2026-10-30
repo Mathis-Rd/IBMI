@@ -1,0 +1,23 @@
+/* Programme d'entrée : contrôle la bibliothèque, crée la liste des  */
+/* membres puis appelle LSTSRCR                                      */
+/* ------------------------------------------------------------------*/
+             PGM        PARM(&P_LIB)
+             DCL        VAR(&P_LIB) TYPE(*CHAR) LEN(10)
+
+/* contrôle la bibliothèque                                          */
+             CHKOBJ     OBJ(QSYS/&P_LIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             SNDPGMMSG  MSG('Bibliothèque inexistante')
+             GOTO       CMDLBL(FIN)
+             ENDDO
+/* crée la liste des membres                                         */
+             DSPFD      FILE(&P_LIB/*ALL) TYPE(*MBRLIST) +
+                          OUTPUT(*OUTFILE) OUTFILE(QTEMP/DSPFD)
+
+             RUNSQL     SQL('delete FROM dspfd where mlseu2 = ''''') +
+                          COMMIT(*NONE)
+/* appelle LSTSRCR                                                   */
+             OVRDBF     FILE(QAFDMBRL) TOFILE(QTEMP/DSPFD)
+             CALL       PGM(LSTSRCR) PARM((&P_LIB))
+             DLTOVR     FILE(*ALL)
+ FIN:        ENDPGM

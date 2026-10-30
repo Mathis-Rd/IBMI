@@ -1,0 +1,5 @@
+                R FSTOCK
+                  ID             6P
+                  ID_PRODUIT     6P
+                  QUANTITE       6P
+                  DATE_MOUV       L         DATFMT(*EUR)

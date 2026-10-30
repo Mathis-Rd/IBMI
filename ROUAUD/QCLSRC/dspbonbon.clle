@@ -1,0 +1,16 @@
+PGM
+             DCLF       FILE(ROUAUD/BONBON) OPNID(B)
+             DCLF       FILE(ROUAUD/ECRANBONB)
+
+ LOOP:       RCVF       OPNID(B)
+             MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(END))
+             CHGVAR     VAR(&NOM) VALUE(&B_NOM)
+             CHGVAR     VAR(&MARQUE) VALUE(&B_MARQUE)
+             CHGVAR     VAR(&COULEUR) VALUE(&B_COULEUR)
+             CHGVAR     VAR(&PRIX) VALUE(&B_PRIX)
+             CHGVAR     VAR(&NUMBER) VALUE(&B_NUMBER)
+
+             SNDRCVF    RCDFMT(FMT1)
+             IF         COND(&IN03) THEN(GOTO CMDLBL(END))
+             GOTO       CMDLBL(LOOP)
+ END:        ENDPGM

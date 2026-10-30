@@ -1,0 +1,50 @@
+     A*%%TS  SD  20261019  163820  MATROU08    REL-V7R5M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R SAVBIB
+     A*%%TS  SD  20261019  151637  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                  1  2USER
+     A                                  2 27'Sauvegarder une bibliothèque'
+     A                                      COLOR(WHT)
+     A                                  1 73DATE
+     A                                      EDTCDE(Y)
+     A                                  2 73TIME
+     A                                  7 24'Écrire la bibliothèque puis ENTREE'
+     A                                      COLOR(BLU)
+     A            SAVLIB        10A  I 12 36
+     A  50                                  ERRMSG('Bibliothèque non trouvée' 5-
+     A                                      0)
+     A                                 23 10'F3=Quitter'
+     A                                      COLOR(BLU)
+     A            SUCCESS       60A  O 20 11COLOR(WHT)
+     A          R CALCULAT
+     A*%%TS  SD  20261019  163820  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  1 35'Calculatrice'
+     A                                      COLOR(WHT)
+     A                                  1 66DATE
+     A                                      EDTCDE(Y)
+     A                                  2 66TIME
+     A                                  7 25'Entrer votre calcul puis ENTREE'
+     A                                      COLOR(BLU)
+     A                                 10 16'Nombre 1'
+     A                                      COLOR(WHT)
+     A                                 10 36'Opération'
+     A                                      COLOR(WHT)
+     A                                 10 55'Nombre 2'
+     A                                      COLOR(WHT)
+     A                                 18 20'Résultat :'
+     A                                      COLOR(WHT)
+     A            RESUL         10Y 2O 18 34EDTCDE(N)
+     A                                 23 13'F3=Quitter'
+     A                                      COLOR(BLU)
+     A            NB2CAL        10Y 2B 13 56EDTCDE(1)
+     A  92                                  ERRMSG('Division par 0 impossible' -
+     A                                      92)
+     A            NB1CAL        10Y 2B 13 15EDTCDE(1)
+     A            OPECAL         1A  B 13 40
+     A  91                                  ERRMSG('Opération doit contenir un -
+     A                                      symbole (+, -, *, /)' 91)

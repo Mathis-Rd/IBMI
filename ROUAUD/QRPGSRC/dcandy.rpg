@@ -1,0 +1,27 @@
+     H            D
+     ***
+     FCANDYL1 UF  E           K        DISK
+     FECRANRPGCF  E                    WORKSTN
+     *** Renomage zone
+     IFBONBON
+     I              COULEUR                         COLOR
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           NUMBER
+     C           NUMBER    CHAINFBONBON              99
+     C   99                MOVEL'BONBON ' MSG    14
+     C   99                MOVE 'INCONNU' MSG
+     C   99                DSPLY          MSG
+     C   99                GOTO FIN
+     C           RETRY     TAG
+     C                     EXFMTFMTPOP
+     C           VALID     IFNE 'OUI'
+     C           VALID     ANDNE'NON'
+     C                     SETON                         96
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           VALID     IFEQ 'OUI'
+     C                     DELETFBONBON
+     C                     ENDIF
+     C           FIN       TAG
+     C                     SETON                         LR

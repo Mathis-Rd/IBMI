@@ -1,0 +1,32 @@
+/*  Exporte un membre source vers un fichier de l'IFS                */
+             PGM        PARM(&REPERTOIRE &BIBLIO &FICHIER &MEMBRE +
+                          &ATTRIBUT)
+
+             DCL        VAR(&REPERTOIRE) TYPE(*CHAR) LEN(50)
+             DCL        VAR(&BIBLIO) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FICHIER) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MEMBRE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&ATTRIBUT) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&PATH) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&SOURCE) TYPE(*CHAR) LEN(100)
+
+             CHGVAR     VAR(&PATH) VALUE(&REPERTOIRE *TCAT &BIBLIO +
+                          *TCAT '/')
+             CRTDIR     DIR(&PATH)
+             MONMSG     MSGID(CPFA0A0)
+
+             CHGVAR     VAR(&PATH) VALUE(&PATH *TCAT &FICHIER *TCAT +
+                          '/')
+             CRTDIR     DIR(&PATH)
+             MONMSG     MSGID(CPFA0A0)
+
+             CHGVAR     VAR(&PATH) VALUE(&PATH *TCAT %LOWER(&MEMBRE) +
+                          *TCAT '.' *TCAT %LOWER(&ATTRIBUT))
+
+             CHGVAR     VAR(&SOURCE) VALUE('/qsys.lib/' *TCAT +
+                          &BIBLIO *TCAT '.lib/' *TCAT &FICHIER +
+                          *TCAT '.FILE/' *TCAT &MEMBRE *TCAT '.MBR')
+
+             CPYTOSTMF  FROMMBR(&SOURCE) TOSTMF(&PATH) +
+                          STMFOPT(*REPLACE) STMFCCSID(1208)
+             ENDPGM

@@ -1,0 +1,10 @@
+             PGM        PARM(&REPERTOIRE &RETOUR)
+             DCL        VAR(&REPERTOIRE) TYPE(*CHAR) LEN(50)
+             DCL        VAR(&RETOUR) TYPE(*CHAR) LEN(1) VALUE('0')
+
+
+             MOV        OBJ(&REPERTOIRE) TOOBJ(&REPERTOIRE)
+             MONMSG     MSGID(CPFA0A9) EXEC(CHGVAR VAR(&RETOUR) +
+                          VALUE('1'))
+
+             ENDPGM

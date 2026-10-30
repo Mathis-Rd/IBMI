@@ -1,0 +1,35 @@
+     H            D
+      ****
+      * CRTPF FILE(LIVCSV) RCDLEN(132)
+      ****
+      *CPYTOSTMF
+      *FROMMBR('/QSYS.LIB/FADRIEN7.LIB/LIVCSV.FILE/LIVCSV.MBR') TOSTMF
+      *('/HOME/FADRIEN/LIVCSV.CSV') STMFOPT(*REPLACE) STMFCCSID(1252)
+     *** Déclaration de fichier IP = Input Primary (Cycle) ***********
+     FBONBON  IP  E           K        DISK
+     FLIVCSV  O   F     132            DISK
+     IFBONBON     83
+     I              COULEUR                         COLOR
+     *-------Header ----------------------------*
+     OLIVCSV  H        1P
+     O                                      'NUMÉRO'
+     O                                      ';'
+     O                                      'NOM'
+     O                                      ';'
+     O                                      'MARQUE'
+     O                                      ';'
+     O                                      'COULEUR'
+     O                                      ';'
+     O                                      'PRIX'
+     O                                      ';'
+     OLIVCSV  D        83
+     O                         NUMBER       '     0'
+     O                                      ';'
+     O                         NOM
+     O                                      ';'
+     O                         MARQUE
+     O                                      ';'
+     O                         COLOR
+     O                                      ';'
+     O                         PRIX         '  0,  '
+     O                                      ';'

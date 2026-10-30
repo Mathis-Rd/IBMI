@@ -1,0 +1,108 @@
+     A*%%TS  SD  20261029  171442  FADRIEN     REL-V7R5M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R SFL1                      SFL
+     A*%%TS  SD  20261029  171442  FADRIEN     REL-V7R5M0  5770-WDS
+     A  88                                  SFLNXTCHG
+     A            OPT            1A  B 12  3
+     A            MLFILE    R        O 12  6REFFLD(QWHFDML/MLFILE *LIBL/QAFDMBR-
+     A                                      L)
+     A            MLNAME    R        O 12 17REFFLD(QWHFDML/MLNAME *LIBL/QAFDMBR-
+     A                                      L)
+     A            MLSEU2    R        O 12 28REFFLD(QWHFDML/MLSEU2 *LIBL/QAFDMBR-
+     A                                      L)
+     A            TXT30         30A  O 12 50TEXT('Text ''description'' ')
+     A            JJMMAA         6Y 0O 12 39EDTCDE(Y)
+     A            TXT20         20A  O 13 50
+     A          R CTL1                      SFLCTL(SFL1)
+     A*%%TS  SD  20261029  171442  FADRIEN     REL-V7R5M0  5770-WDS
+     A                                      CF03
+     A                                      CF05
+     A                                      CF09
+     A                                      CF12
+     A                                      CF13
+     A                                      CF21
+     A                                      OVERLAY
+     A  81                                  SFLDSP
+     A  80                                  SFLDSPCTL
+     A N80                                  SFLCLR
+     A  81                                  SFLEND(*MORE)
+     A                                      SFLDROP(CF11)
+     A                                      SFLSIZ(0008)
+     A                                      SFLPAG(0004)
+     A            PGM           10A  O  1  3
+     A                                  1 28'Liste des membres sources'
+     A                                      COLOR(WHT)
+     A                                  1 72DATE
+     A                                      EDTCDE(Y)
+     A                                  2 72TIME
+     A                                  3  3'Bibliothèque . . . . :'
+     A                                  4  3'Répertoire IFS . . . :'
+     A                                  5  3'Fichier source . . . :'
+     A                                  6  3'Attribut . . . . . . :'
+     A            BIBLIO        10A  O  3 26
+     A            REPIFS        50A  O  4 26
+     A  51                                  ERRMSG('Définissez d''abord le répe-
+     A                                      rtoire IFS (F9)' 51)
+     A            FLTFIC        10A  B  5 26CHANGE(25)
+     A            FLTATT        10A  B  6 26CHANGE(25)
+     A                                  8  2'Indiquez vos options, puis appuyez-
+     A                                       sur Entrée.'
+     A                                      COLOR(BLU)
+     A                                  9  4'6=Exporter vers l''IFS'
+     A                                      COLOR(BLU)
+     A                                 11  2'Opt Fichier    Membre     Attribut-
+     A                                         Modif.     Texte'
+     A                                      COLOR(BLU)
+     A          R PIED1
+     A*%%TS  SD  20261029  150853  FADRIEN     REL-V7R5M0  5770-WDS
+     A                                 21  3'F3=Exit        F5=Réactualiser    -
+     A                                       F9=Répertoire IFS      F12=Annuler-
+     A                                         '
+     A                                      COLOR(BLU)
+     A                                 22  3'F13=Répéter                       -
+     A                                                              F21=Export -
+     A                                      ZIP'
+     A                                      COLOR(BLU)
+     A          R WREPIFS
+     A*%%TS  SD  20261028  144053  FADRIEN     REL-V7R5M0  5770-WDS
+     A                                      WINDOW(8 10 10 60)
+     A                                      CF12
+     A                                  1 20'Répertoire d''export IFS'
+     A                                      COLOR(WHT)
+     A                                  3  2'Chemin :'
+     A                                      COLOR(BLU)
+     A            REPIFS        50A  B  4  2
+     A  95                                  ERRMSG('Le répertoire n''existe pas-
+     A                                       !' 95)
+     A                                  6  2'F12=Annuler'
+     A                                      COLOR(BLU)
+     A          R WEXPIFS
+     A*%%TS  SD  20261028  173655  FADRIEN     REL-V7R5M0  5770-WDS
+     A                                      CF12(12)
+     A                                      WINDOW(8 10 10 61)
+     A                                  1 26'Export ZIP'
+     A                                      COLOR(WHT)
+     A                                  3  2'Bibliothèque . . :'
+     A                                      COLOR(BLU)
+     A                                  9  2'F12=Annuler'
+     A                                      COLOR(BLU)
+     A                                  4  2'Membres. . . . . :'
+     A                                      COLOR(BLU)
+     A                                  5  2'Archive :'
+     A                                      COLOR(BLU)
+     A            BIBLIO        10A  O  3 22
+     A            NBMBR          4S 0O  4 22
+     A                                  8  2'Confirmer (O/N) . :'
+     A                                      COLOR(BLU)
+     A            REP            1A  B  8 22
+     A                                  4 28'(tous'
+     A                                  4 34'les'
+     A                                  4 38'membres'
+     A                                  4 46'sources)'
+     A            PATH1         50A  O  5 12
+     A            PATH2         50A  O  6 12
+     A          R BIDON
+     A*%%TS  SD  20261028  142752  FADRIEN     REL-V7R5M0  5770-WDS
+     A                                      ASSUME
+     A                                  1  4' '

@@ -1,0 +1,45 @@
+     A*%%TS  SD  20261019  141731  MATROU08    REL-V7R5M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CA03(03 'Quitter')
+     A          R FMT1
+     A*%%TS  SD  20261019  141731  MATROU08    REL-V7R5M0  5770-WDS
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  2 33'Affichage soldat'
+     A                                      COLOR(WHT)
+     A                                  1 68DATE
+     A                                      EDTCDE(Y)
+     A                                  2 68TIME
+     A                                  7 23'Id :'
+     A                                      COLOR(WHT)
+     A                                  9 22'Nom :'
+     A                                      COLOR(WHT)
+     A                                 11 20'PSLDT :'
+     A                                      COLOR(WHT)
+     A                                 13 20'ASLDT :'
+     A                                      COLOR(WHT)
+     A                                 15 19'A2SLDT :'
+     A                                      COLOR(WHT)
+     A                                 17 19'CLSLDT :'
+     A                                      COLOR(WHT)
+     A            IDSLDT    R        O  7 29REFFLD(SOLDATF/IDSLDT ROUAUD/SOLDAT)
+     A            NSLDT     R        O  9 29REFFLD(SOLDATF/NSLDT ROUAUD/SOLDAT)
+     A            PSLDT     R        O 11 29REFFLD(SOLDATF/PSLDT ROUAUD/SOLDAT)
+     A            ASLDT     R        O 13 29REFFLD(SOLDATF/ASLDT ROUAUD/SOLDAT)
+     A            A2SLDT    R        O 15 29REFFLD(SOLDATF/A2SLDT ROUAUD/SOLDAT)
+     A            CLSLDT    R        O 17 29REFFLD(SOLDATF/CLSLDT ROUAUD/SOLDAT)
+     A                                 23 11'F3=Quitter'
+     A                                      COLOR(BLU)
+     A          R FMT0
+     A*%%TS  SD  20261019  140845  MATROU08    REL-V7R5M0  5770-WDS
+     A                                  1  2SYSNAME
+     A                                  2  2USER
+     A                                  1 72DATE
+     A                                      EDTCDE(Y)
+     A                                  2 72TIME
+     A                                 11 14'Filtre de recherche :'
+     A                                      COLOR(WHT)
+     A            FILTRE        15   B 11 40
+     A                                 23 15'F3=Quitter'
+     A                                      COLOR(BLU)

@@ -1,0 +1,52 @@
+     H            D
+     * Déclaration de fichier
+     FCYCVTE  IP  E           K        DISK
+     FQPRINT  O   F     132     OA    LPRINTER
+     * TABLEAU
+     E                    TBB     1   4 80
+     * Spécification L
+     LQPRINT   30FL 30OL
+     * Renommer une zone
+     ICYCVTR      01
+     *** TRAITEMENT
+     I              REGION                          REGIONL1
+     * CALCULS DE DETAIL : A CHAQUE ENREGISTREMENT LU
+     C   01      TOTREG    ADD  MONTNT    TOTREG  92
+     C   01      NBCLI     ADD  1         NBCLI   30
+     * CALCULS DE TOTAL : AU CHANGEMENT DE REGION
+     CL1         TOTGEN    ADD  TOTREG    TOTGEN 112
+     *** SORTIE OUTPUT : IMPRESSION
+     OQPRINT  H 1  1   1P
+     O       OR        OA
+     O                                   24 'VENTES PAR RÉGION'
+     OQPRINT  H 1      1P
+     O       OR        OA
+     O                                   45 '================='
+     OQPRINT  H 3      1P
+     O       OR        OA
+     O                         TBB,1
+     OQPRINT  H 1      1P
+     O       OR        OA
+     O                         TBB,2
+     OQPRINT  H 1      1P
+     O       OR        OA
+     O                         TBB,3
+     OQPRINT  D 1      01
+     O                         TBB,4
+     O                         REGION    12
+     O                         CLIENT    35
+     O                         MONTNT    47 '    0,  &€'
+     O        T 2      L1
+     O                                   19 'TOTAL'
+     O                         REGION    30
+     O                         TOTREGJB  46
+     O                         NBCLI ZB  52
+     O                                   62 'CLIENT(S)'
+     O        T 1      LR
+     O                                   27 'TOTAL GÉNÉRAL'
+     O                         TOTGENJ   46
+** TBB
++-----------------------------------------------+
+| REGION     | Nom CLIENT           | MONTANT   |
+|------------|----------------------|-----------|
+| XXXXXXXXXX | xxxxxxxxx1xxxxxxxxx2 | xxxxxxxxX |

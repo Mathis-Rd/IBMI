@@ -1,0 +1,20 @@
+PGM
+
+             DCLF       FILE(QADSPOBJ)
+             DCL        VAR(&NBLIB) TYPE(*DEC) LEN(10 0) VALUE(0)
+             DSPOBJD    OBJ(QSYS/*ALL) OBJTYPE(*LIB) +
+                          OUTPUT(*OUTFILE) OUTFILE(QTEMP/NBBIB)
+
+             OVRDBF     FILE(QADSPOBJ) TOFILE(QTEMP/NBBIB)
+
+ LOOP:       RCVF
+             MONMSG     MSGID(CPF0864) EXEC(GOTO CMDLBL(END))
+
+             CHGVAR     VAR(&NBLIB) VALUE(&NBLIB + 1)
+
+             GOTO       CMDLBL(LOOP)
+
+ END:        DLTOVR     FILE(QADSPOBJ)
+             SNDPGMMSG  MSG('NBBIBLIO Agrion :' *CAT %CHAR(&NBLIB))
+
+ENDPGM

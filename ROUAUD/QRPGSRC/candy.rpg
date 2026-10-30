@@ -1,0 +1,74 @@
+     FECRANRPGCF  E                    WORKSTN
+     FCANDYL1 UF  E           K        DISK                      A
+     E                    TBB     1   2 12
+     IFBONBON
+     I              COULEUR                         COLOR
+     C           *ENTRY    PLIST
+     C                     PARM           NUMBER
+     * On cherche le bonbon correspondant au number
+     C           NUMBER    CHAINFBONBON              90
+     * Si on trouve pas de bonbon on lance la sus-routine NEWNUM
+     C   90                EXSR NEWNUM
+     * On affiche création ou modif en fonction de si on trouve le
+     * bonbon correspondant ou non
+     C   90                MOVEATBB,2     MODE
+     C  N90                MOVEATBB,1     MODE
+     * Boucle retry
+     C           RETRY     TAG
+     * On affiche l'écran
+     C                     EXFMTFMTCAN
+     * Boucle F3
+     C           *IN03     IFEQ '0'
+     * Exécute la sous-routine ctl pour controler les champs
+     C                     EXSR CTL
+     * Exécute la sous-routine en fonction de l'indicateur
+     C   90                EXSR AJOUT
+     C  N90                EXSR MODIF
+      *
+     C                     ENDIF
+     C                     SETON                         LR
+      *
+     ******* SOUS-ROUTINES *******
+      *
+     * Sous-routine pour vérifier les champs
+     C           CTL       BEGSR
+     C           NOM       IFEQ *BLANKS
+     C                     SETON                         52
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           MARQUE    IFEQ *BLANKS
+     C                     SETON                         53
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           COLOR     IFEQ *BLANKS
+     C                     SETON                         54
+     C                     GOTO RETRY
+     C                     ENDIF
+     C           PRIX      IFLE *ZEROS
+     C                     SETON                         55
+     C                     GOTO RETRY
+     C                     ENDIF
+     C                     ENDSR
+     * Sous-routine d'Ajout
+     C           AJOUT     BEGSR
+     C                     WRITEFBONBON
+     C                     ENDSR
+     * Sous-routine de Modification
+     C           MODIF     BEGSR
+     C                     UPDATFBONBON
+     C                     ENDSR
+     * Sous routine pour récupérer le premier NUMBER disponible
+     C           NEWNUM    BEGSR
+     C           *HIVAL    SETGTFBONBON
+     C                     READPFBONBON                  91
+     C   91                Z-ADD0         NUMBER
+     C                     ADD  1         NUMBER
+     C                     MOVE *BLANKS   NOM
+     C                     MOVE *BLANKS   MARQUE
+     C                     MOVE *BLANKS   COLOR
+     C                     MOVE *ZEROS    PRIX
+     C                     ENDSR
+      *
+** TBB
+MODIFICATION
+  CREATION

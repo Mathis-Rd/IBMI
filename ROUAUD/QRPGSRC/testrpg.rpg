@@ -1,0 +1,4 @@
+     FCLIENT  UF  E                    DISK                      A
+     C   60                ADD  3         TOTO    20
+     C                     SETON                         LR
+     C                     DSPLY          TOTO

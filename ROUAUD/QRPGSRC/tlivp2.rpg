@@ -1,0 +1,61 @@
+     H            D
+     * Déclaration de fichier
+     FTLIVL2  IP  E           K        DISK
+     FQPRINT  O   F     132     OA    LPRINTER
+     * Spécification L
+     LQPRINT   30FL 30OL
+     *
+     ILIVSF       01
+     I                                              LIIDCLL1
+     I                                              LIAALIL3
+     I                                              LIMMLIL2
+     I                                              LIJJLIL1
+     * CALCULS DE DETAIL : A CHAQUE ENREGISTREMENT LU
+     C   01      LITXTV    DIV  100       TXTVA   43
+     C   01      TXTVA     ADD  1         TXTVA
+     C   01      LIQTLI    MULT LIPUHT    PRIXHT  72
+     C   01      PRIXHT    MULT TXTVA     PRITVA  72H
+     C   01      TOTPRI    ADD  PRIXHT    TOTPRI  92
+     C   01      TOTTVA    ADD  PRITVA    TOTTVA  92
+     *** SORTIE OUTPUT : IMPRESSION
+     OQPRINT  H  2 1   L1
+     O       OR        OA
+     O                                    8 'DATE: '
+     O                         UDATE Y   16
+     O                                   76 'PAGE: '
+     O                         PAGE      80
+     O        D  1     L1
+     O                                   24 'BON DE LIVRAISON'
+     O        D  1     L1
+     O                                    8 'CLIENT :'
+     O                         LIIDCL  +  1
+     O                         LINOCL  +  1
+     O                                   40 'DATE: '
+     O                         LIJJLI    42
+     O                                      '/'
+     O                         LIMMLI
+     O                                      '/'
+     O                         LIAALI
+     O        D  1     L1
+     O                                   10 'CODE AR.'
+     O                                   18 'ARTICLE'
+     O                                   48 'QTÉ'
+     O                                   57 'P.U. HT'
+     O                                   68 'TOTAL HT'
+     O                                   79 'TOTAL TTC'
+     O                                   86 'TVA'
+     O        D  1     01
+     O                         LICOAR    10 '0  .   '
+     O                         LINOAR  +  1
+     O                         LIQTLI  +  1 '    0 '
+     O                         LIPUHT  +  1 ' ,  0.  '
+     O                         PRIXHT  +  1 '   ,  0.  '
+     O                         PRITVA  +  1 '   ,  0.  '
+     O                         LITXTV  +  1 '  0.  '
+     O        T  2     L1
+     O                                   30 'TOTAL HT: '
+     O                         TOTPRI1B
+     O        T  2     L1
+     O                                   30 'TOTAL TTC: '
+     O                         TOTTVA1B
+      *

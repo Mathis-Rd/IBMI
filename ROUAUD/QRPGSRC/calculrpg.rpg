@@ -1,0 +1,9 @@
+     FECRANRPGCF  E                    WORKSTN
+     C                     EXFMTRESULTAT
+     C                     Z-ADDNOMBRE    NOMB   142
+     C                     Z-ADDPOURCENT  POURC
+     C                     DO   10
+     C           NOMB      MULT 1.2       NOMB
+     C           NOMB      DSPLY
+     C                     END
+     C                     SETON                     LR

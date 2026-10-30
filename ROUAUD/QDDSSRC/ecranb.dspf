@@ -1,0 +1,122 @@
+     A*%%TS  SD  20261020  095101  MATROU08    REL-V7R5M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R FMT1
+     A*%%TS  SD  20261020  095101  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  1 73DATE
+     A                                      EDTCDE(Y)
+     A                                  2 73TIME
+     A                                  2 25'Afficher le contenu d''un fichier'
+     A                                      COLOR(WHT)
+     A                                  6 17'Appuyer sur ENTREE pour défiler da-
+     A                                      ns le fichier'
+     A                                      COLOR(BLU)
+     A                                 10 38'Bonbon'
+     A                                 13 17'Nom.....:'
+     A                                      COLOR(WHT)
+     A                                 14 17'Marque..:'
+     A                                      COLOR(WHT)
+     A                                 15 17'Couleur.:'
+     A                                      COLOR(WHT)
+     A                                 16 17'Prix....:'
+     A                                      COLOR(WHT)
+     A                                 17 17'Numéro..:'
+     A                                      COLOR(WHT)
+     A                                 23 17'F3=Quitter'
+     A                                      COLOR(BLU)
+     A                                 16 47'€'
+     A            NOM       R        B 13 28REFFLD(FBONBON/NOM ROUAUD/CANDY)
+     A            MARQUE    R        B 14 28REFFLD(FBONBON/MARQUE ROUAUD/CANDY)
+     A            COLOR     R        B 15 38REFFLD(FBONBON/COULEUR ROUAUD/CANDY)
+     A            PRIX      R        B 16 40REFFLD(FBONBON/PRIX ROUAUD/CANDY)
+     A            NUMBER    R        B 17 41REFFLD(FBONBON/NUMBER ROUAUD/CANDY)
+     A          R FMT2
+     A*%%TS  SD  20261007  090741  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  2 33'Format de saisie'
+     A                                      COLOR(WHT)
+     A                                  1 65DATE
+     A                                      EDTCDE(Y)
+     A                                  2 65TIME
+     A                                 10  2'Afficher seulement les bonbons de -
+     A                                      marque : '
+     A                                      COLOR(WHT)
+     A            SAISIE        20A  I 10 47CHECK(LC)
+     A                                      CHECK(ME)
+     A  50                                  ERRMSG('Aucune entrée trouvée pour -
+     A                                      cette marque')
+     A                                 23 11'F3=Quitter'
+     A                                      COLOR(BLU)
+     A          R FMTPOPUP
+     A*%%TS  SD  20261007  150704  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                      WINDOW(5 15 10 50)
+     A                                  1  9'Êtes vous sûr de vouloir quitter ?'
+     A                                      COLOR(WHT)
+     A                                  6  6'F3=Quitter'
+     A                                      COLOR(BLU)
+     A                                  6 32'F12=Annuler'
+     A                                      COLOR(BLU)
+     A                                  9  4'Vous ne pourrez plus faire machine-
+     A                                       arrière...'
+     A                                      COLOR(RED)
+     A          R FMTBIBL
+     A*%%TS  SD  20261008  094116  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  1 28'Objets d''une bibliothèque'
+     A                                      COLOR(WHT)
+     A                                  1 73DATE
+     A                                      EDTCDE(Y)
+     A                                  2 73TIME
+     A                                  6 23'Bibliothèque'
+     A                                      COLOR(WHT)
+     A            NOMBIBL       10A  O  6 40
+     A                                  9 30'Nom :'
+     A                                      COLOR(WHT)
+     A                                 12 29'Type :'
+     A                                      COLOR(WHT)
+     A                                 15 27'Taille :'
+     A                                      COLOR(WHT)
+     A                                 19 27'Objet n°'
+     A                                      COLOR(WHT)
+     A            NOMOBJBIB     10A  O  9 40
+     A            TYPEOBJBIB     4A  O 12 40
+     A            TAILLEOBJB     6  0O 15 40
+     A  90                                  COLOR(RED)
+     A            NUMOBJBIB      3S 0O 19 40
+     A                                 19 44'/'
+     A                                      COLOR(WHT)
+     A            MAXOBJBIB      3S 0O 19 46
+     A                                 23  8'F3=Quitter'
+     A                                      COLOR(BLU)
+     A          R FMTSAISIEB
+     A*%%TS  SD  20261008  103258  MATROU08    REL-V7R5M0  5770-WDS
+     A                                      CA03(03 'Quitter')
+     A                                      CA12(12 'Annuler')
+     A                                  1  2USER
+     A                                  2  2SYSNAME
+     A                                  1 21'Affichage des objets d''une biblio-
+     A                                      thèque'
+     A                                      COLOR(WHT)
+     A                                  1 71DATE
+     A                                      EDTCDE(Y)
+     A                                  2 71TIME
+     A                                  6 19'Saisir le nom de la bibliothèque p-
+     A                                      uis ENTREE'
+     A                                      COLOR(BLU)
+     A            BIBLIO        10A  I 11 36CHECK(ME)
+     A  80                                  ERRMSG('Bibliothèque non trouvée / -
+     A                                      Non accessible' 80)
+     A                                 23 10'F3=Quitter'
+     A                                      COLOR(BLU)
